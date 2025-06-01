@@ -112,6 +112,7 @@
             opacity: 0.2;
         }
     </style>
+    <script src="/config.js"></script>
 </head>
 
 <body>
@@ -133,7 +134,8 @@
     <script language="javascript" type="text/javascript">
         window.onload = function () {
             // WebSocket setup
-            const socket = new WebSocket('ws' + (location.protocol === 'https:' ? 's' : '') + '://' + window.location.host + '/spectator');
+            // Backend server URL - using configuration
+            const socket = new WebSocket(window.appConfig.getWebSocketUrl('/spectator'));
 
             // Game variables
             var check = Array.from({ length: 15 * 15 }, () => ({ state: false, color: "" }));
