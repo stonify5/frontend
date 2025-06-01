@@ -12,6 +12,9 @@ RUN rm -rf ./*
 # Copy only the public directory contents to Nginx public directory
 COPY public/ .
 
+# Copy custom Nginx configuration
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+
 # Expose port 80
 EXPOSE 80
 
