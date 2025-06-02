@@ -9,8 +9,8 @@ WORKDIR /usr/share/nginx/html
 # Remove default Nginx static assets
 RUN rm -rf ./*
 
-# Copy only the static directory contents to Nginx public directory
-COPY static/ .
+# Copy only the public directory contents to Nginx public directory
+COPY public/ .
 
 # Copy custom Nginx configuration
 COPY nginx.conf /etc/nginx/conf.d/default.conf
