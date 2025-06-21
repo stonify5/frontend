@@ -1,0 +1,131 @@
+body[data-page="game"] {
+    padding-top: var(--header-height);
+    padding-bottom: var(--footer-height);
+    background: var(--bg-primary);
+}
+
+body[data-page="game"] main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.8rem;
+    padding: 0 1rem;
+}
+
+#gameStatus {
+    padding: 0.8rem 1.5rem;
+    background: var(--bg-glass);
+    backdrop-filter: blur(var(--blur-md));
+    border: 2px solid var(--border-secondary);
+    border-radius: var(--radius-lg);
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    text-align: center;
+    min-width: 250px;
+    transition: var(--transition);
+    box-shadow: var(--shadow-sm);
+}
+
+#gameStatus.status-info {
+    border-color: var(--border-primary);
+    color: var(--text-primary);
+    background: var(--bg-glass-hover);
+}
+
+#gameStatus.status-success {
+    border-color: var(--status-success);
+    color: var(--status-success);
+    background: rgba(0, 255, 136, 0.1);
+    box-shadow: 0 0 20px rgba(0, 255, 136, 0.2);
+}
+
+#gameStatus.status-error {
+    border-color: var(--status-error);
+    color: var(--status-error);
+    background: rgba(255, 68, 68, 0.1);
+    box-shadow: 0 0 20px rgba(255, 68, 68, 0.2);
+}
+
+#gameStatus.status-warning {
+    border-color: var(--status-warning);
+    color: var(--status-warning);
+    background: rgba(255, 170, 0, 0.1);
+    box-shadow: 0 0 20px rgba(255, 170, 0, 0.2);
+}
+
+.game-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    max-width: 600px;
+    gap: 1rem;
+}
+
+.player-info {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.6rem 1rem;
+    background: var(--bg-glass);
+    border: 1px solid var(--border-secondary);
+    border-radius: var(--radius-md);
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+    transition: var(--transition);
+}
+
+.player-info.active {
+    border-color: var(--border-accent);
+    color: var(--text-primary);
+    background: var(--bg-glass-hover);
+}
+
+.player-stone {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    border: 1px solid var(--border-primary);
+    flex-shrink: 0;
+}
+
+.player-stone.black {
+    background: var(--stone-black);
+    border-color: var(--stone-black);
+}
+
+.player-stone.white {
+    background: var(--stone-white);
+    border-color: var(--text-tertiary);
+}
+
+.game-controls {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.timer-display {
+    font-family: 'Courier New', monospace;
+    font-size: 1.1rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+}
+
+@media (max-width: 768px) {
+    #gameStatus {
+        margin: 0 1rem;
+        padding: 0.6rem 1.2rem;
+        font-size: 1rem;
+        min-width: auto;
+        width: 100%;
+        max-width: 300px;
+    }
+    
+    body[data-page="game"] main {
+        padding: 0.5rem 0.5rem;
+        gap: 0.5rem;
+    }
+}

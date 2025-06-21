@@ -1,0 +1,121 @@
+body[data-page="spectator"] {
+    padding-top: var(--header-height);
+    padding-bottom: var(--footer-height);
+    background: var(--bg-primary);
+}
+
+body[data-page="spectator"] main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.8rem;
+    padding: 1rem 1rem 0 1rem; /* 상단 패딩 추가 */
+}
+
+#nextButton {
+    margin-top: 0.5rem; /* 헤더와의 간격 확보 */
+    padding: 0.75rem 2rem;
+    background: var(--bg-glass);
+    border: 2px solid var(--border-primary);
+    border-radius: var(--radius-lg);
+    color: var(--text-primary);
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: var(--transition);
+    backdrop-filter: blur(var(--blur-md));
+    box-shadow: var(--shadow-sm);
+    z-index: 10;
+}
+
+#nextButton:hover {
+    background: var(--bg-glass-hover);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-md);
+}
+
+#userNames {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    text-align: center;
+    padding: 0.8rem 1.5rem;
+    background: var(--bg-glass);
+    backdrop-filter: blur(var(--blur-md));
+    border: 2px solid var(--border-primary);
+    border-radius: var(--radius-lg);
+    transition: var(--transition);
+    box-shadow: var(--shadow-sm);
+    min-width: 250px;
+}
+
+.spectator-controls {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    justify-content: center;
+}
+
+.room-status {
+    text-align: center;
+    padding: 1.5rem;
+    background: var(--bg-glass);
+    border: 1px solid var(--border-secondary);
+    border-radius: var(--radius-lg);
+    color: var(--text-secondary);
+    font-weight: 500;
+    max-width: 400px;
+}
+
+.spectator-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    gap: 1rem;
+}
+
+.viewer-count {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 0.75rem;
+    background: var(--bg-glass);
+    border: 1px solid var(--border-secondary);
+    border-radius: var(--radius-sm);
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+}
+
+.viewer-count::before {
+    content: "👁";
+    font-size: 0.9rem;
+}
+
+@media (max-width: 768px) {
+    #userNames {
+        margin: 0 1rem;
+        padding: 0.6rem 1.2rem;
+        font-size: 1rem;
+        min-width: auto;
+        width: 100%;
+        max-width: 300px;
+    }
+    
+    body[data-page="spectator"] main {
+        padding: 0.8rem 0.5rem 0.5rem 0.5rem; /* 모바일에서도 상단 패딩 유지 */
+        gap: 0.5rem;
+    }
+    
+    #nextButton {
+        margin-top: 0.3rem; /* 모바일에서 간격 조정 */
+        padding: 0.6rem 1.5rem;
+        font-size: 0.9rem;
+    }
+    
+    .spectator-controls {
+        flex-direction: column;
+        align-items: center;
+        gap: 0.8rem;
+    }
+}

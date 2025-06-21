@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stonify5 - Spectator</title>
+
+    <meta name="description" content="Watch real-time Gomoku games from players worldwide.">
+
+    <link rel="alternate" hreflang="ko" href="/ko/spectator.html">
+    <link rel="alternate" hreflang="en" href="/en/spectator.html">
+    <link rel="alternate" hreflang="ja" href="/ja/spectator.html">
+
+    <meta property="og:title" content="Stonify5 - Spectator">
+    <meta property="og:description" content="Watch real-time Gomoku games">
+    <meta property="og:image" content="/assets/images/og.svg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:type" content="game">
+
+    <link rel="icon" href="/assets/images/favicon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.svg">
+    <link rel="stylesheet" href="/css/main.css">
+
+    <script src="/js/config.js"></script>
+</head>
+
+<body data-page="spectator" data-theme="dark">
+    <header>
+        <div class="logo">
+            <a href="/">
+                <img src="/assets/images/logo.svg" alt="Stonify5">
+            </a>
+        </div>
+        <div id="userCount">Loading...</div>
+        <div id="languageSelector">
+            <button data-lang="ko">한국어</button>
+            <button data-lang="en">English</button>
+            <button data-lang="ja">日本語</button>
+        </div>
+    </header>
+
+    <main>
+        <button id="nextButton" class="glass-interactive" data-i18n="spectator.nextRoom">다음 방</button>
+
+        <div id="userNames" class="glass">게임을 찾는 중...</div>
+
+        <div class="board-container">
+            <canvas id="gameBoard">
+                <p data-i18n="error.canvas">Canvas not supported</p>
+            </canvas>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Stonify5. Online Gomoku Experience.</p>
+    </footer>
+
+    <script src="/js/constants.js"></script>
+    <script src="/js/utils.js"></script>
+    <script src="/js/i18n/locales/ko.js"></script>
+    <script src="/js/i18n/locales/en.js"></script>
+    <script src="/js/i18n/locales/ja.js"></script>
+    <script src="/js/i18n/i18n.js"></script>
+    <script src="/js/services/storage.js"></script>
+    <script src="/js/services/audio.js"></script>
+    <script src="/js/services/websocket.js"></script>
+    <script src="/js/game/board.js"></script>
+    <script src="/js/game/stone.js"></script>
+    <script src="/js/spectator/spectator.js"></script>
+    <script src="/js/ui/header.js"></script>
+    <script src="/js/app.js"></script>
+    <script src="/js/main.js"></script>
+</body>
+
+</html>
