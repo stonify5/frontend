@@ -20,10 +20,10 @@ class AdService {
     // Initialize ads after page load
     if (document.readyState === "loading") {
       document.addEventListener("DOMContentLoaded", () => {
-        this.initializeAds();
+        setTimeout(() => this.initializeAds(), 1000);
       });
     } else {
-      this.initializeAds();
+      setTimeout(() => this.initializeAds(), 1000);
     }
   }
 
@@ -43,7 +43,9 @@ class AdService {
         console.log("Ad blocker detected");
         this.handleAdBlocker();
       }
-      document.body.removeChild(testAd);
+      if (document.body.contains(testAd)) {
+        document.body.removeChild(testAd);
+      }
     }, 100);
   }
 
@@ -53,184 +55,81 @@ class AdService {
     adContainers.forEach((container) => {
       container.style.display = "none";
     });
-
-    // Optional: Show a polite message to users
-    // this.showAdBlockerMessage();
-  }
-
-  showAdBlockerMessage() {
-    const message = document.createElement("div");
-    message.className = "adblocker-message";
-    message.innerHTML = `
-            <div class="glass" style="padding: 1rem; margin: 1rem; text-align: center; border-radius: 12px;">
-                <p>광고 차단기가 감지되었습니다. 무료 서비스 제공을 위해 광고를 허용해 주세요.</p>
-            </div>
-        `;
-
-    const firstAdContainer = document.querySelector(".ad-container");
-    if (firstAdContainer) {
-      firstAdContainer.parentNode.insertBefore(message, firstAdContainer);
-    }
   }
 
   initializeAds() {
     if (this.adBlockerDetected) {
+      console.log("Ad blocker detected, skipping ad initialization");
       return;
     }
 
-    // Initialize AdSense
-    this.loadAdSense();
-
-    // Setup responsive ads
-    this.setupResponsiveAds();
-
-    // Setup lazy loading for ads
-    this.setupLazyLoading();
+    console.log("Initializing ads...");
+    this.waitForAdSense();
   }
 
-  loadAdSense() {
-    // Check if AdSense is already loaded
+  waitForAdSense() {
     if (window.adsbygoogle) {
-      this.adsLoaded = true;
+      console.log("AdSense loaded, pushing ads...");
       this.pushAds();
-      return;
-    }
-
-    // Load AdSense script
-    const script = document.querySelector('script[src*="adsbygoogle.js"]');
-    if (script) {
-      script.addEventListener("load", () => {
-        this.adsLoaded = true;
-        this.pushAds();
-      });
-
-      script.addEventListener("error", () => {
-        this.handleAdLoadError();
-      });
+      this.adsLoaded = true;
+    } else {
+      this.retryCount++;
+      if (this.retryCount < this.maxRetries) {
+        console.log(
+          `AdSense not ready, retrying... (${this.retryCount}/${this.maxRetries})`
+        );
+        setTimeout(() => this.waitForAdSense(), 2000);
+      } else {
+        console.error("AdSense failed to load after multiple attempts");
+      }
     }
   }
 
   pushAds() {
-    const ads = document.querySelectorAll(".adsbygoogle");
-    ads.forEach((ad) => {
+    if (!window.adsbygoogle) {
+      console.log("AdSense not loaded yet");
+      return;
+    }
+
+    const ads = document.querySelectorAll(".adsbygoogle:not([data-pushed])");
+    console.log(`Found ${ads.length} ads to initialize`);
+
+    ads.forEach((ad, index) => {
       try {
-        if (!ad.getAttribute("data-pushed")) {
-          (window.adsbygoogle = window.adsbygoogle || []).push({});
-          ad.setAttribute("data-pushed", "true");
-        }
+        ad.style.display = "block";
+        (window.adsbygoogle = window.adsbygoogle || []).push({});
+        ad.setAttribute("data-pushed", "true");
+        console.log(`Ad ${index + 1} pushed successfully`);
       } catch (error) {
-        console.error("Error pushing ad:", error);
+        console.error(`Error pushing ad ${index + 1}:`, error);
       }
     });
   }
 
-  handleAdLoadError() {
-    if (this.retryCount < this.maxRetries) {
-      this.retryCount++;
-      setTimeout(() => {
-        this.loadAdSense();
-      }, 2000 * this.retryCount);
-    } else {
-      console.error("Failed to load AdSense after multiple attempts");
-      this.handleAdBlocker();
-    }
-  }
-
-  setupResponsiveAds() {
-    // Refresh ads on window resize
-    let resizeTimer;
-    window.addEventListener("resize", () => {
-      clearTimeout(resizeTimer);
-      resizeTimer = setTimeout(() => {
-        this.refreshAds();
-      }, 500);
-    });
-  }
-
-  setupLazyLoading() {
-    if ("IntersectionObserver" in window) {
-      const adObserver = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              const ad = entry.target.querySelector(".adsbygoogle");
-              if (ad && !ad.getAttribute("data-pushed")) {
-                try {
-                  (window.adsbygoogle = window.adsbygoogle || []).push({});
-                  ad.setAttribute("data-pushed", "true");
-                } catch (error) {
-                  console.error("Error with lazy-loaded ad:", error);
-                }
-              }
-              adObserver.unobserve(entry.target);
-            }
-          });
-        },
-        {
-          threshold: 0.1,
-          rootMargin: "50px",
-        }
-      );
-
-      // Observe all ad containers
-      document.querySelectorAll(".ad-container").forEach((container) => {
-        adObserver.observe(container);
-      });
-    }
-  }
-
   refreshAds() {
-    // Refresh ads for responsive design
-    if (window.adsbygoogle && this.adsLoaded) {
-      const ads = document.querySelectorAll(".adsbygoogle");
-      ads.forEach((ad) => {
-        if (ad.getAttribute("data-pushed")) {
-          ad.removeAttribute("data-pushed");
-        }
-      });
-      this.pushAds();
+    if (!this.adsLoaded || this.adBlockerDetected) {
+      return;
     }
-  }
 
-  // Analytics for ad performance
-  trackAdPerformance() {
-    // Track ad visibility
-    if ("IntersectionObserver" in window) {
-      const performanceObserver = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              const adContainer = entry.target;
-              const adType = adContainer.className.includes("banner")
-                ? "banner"
-                : adContainer.className.includes("rectangle")
-                ? "rectangle"
-                : "sidebar";
+    console.log("Refreshing ads...");
+    const ads = document.querySelectorAll(".adsbygoogle[data-pushed]");
+    ads.forEach((ad) => {
+      ad.removeAttribute("data-pushed");
+    });
 
-              // Track with analytics (if available)
-              if (window.gtag) {
-                gtag("event", "ad_view", {
-                  ad_type: adType,
-                  page: document.body.dataset.page || "unknown",
-                });
-              }
-            }
-          });
-        },
-        {
-          threshold: 0.5,
-        }
-      );
-
-      document.querySelectorAll(".ad-container").forEach((container) => {
-        performanceObserver.observe(container);
-      });
-    }
+    setTimeout(() => this.pushAds(), 100);
   }
 }
 
 // Initialize ad service
-const adService = new AdService();
+let adService;
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", () => {
+    adService = new AdService();
+  });
+} else {
+  adService = new AdService();
+}
 
 // Export for use in other modules
 if (typeof module !== "undefined" && module.exports) {

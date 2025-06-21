@@ -9,9 +9,9 @@
     border: 1px solid rgba(255, 255, 255, 0.1);
     text-align: center;
     min-height: 100px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    display: block;
+    width: 100%;
+    overflow: hidden;
     transition: opacity 0.3s ease;
 }
 
@@ -24,6 +24,7 @@
     max-width: 728px;
     margin: 2rem auto;
     min-height: 90px;
+    display: block;
 }
 
 .ad-rectangle {
@@ -31,6 +32,7 @@
     max-width: 336px;
     margin: 2rem auto;
     min-height: 280px;
+    display: block;
 }
 
 .sidebar-ad {
@@ -45,7 +47,8 @@
     background: rgba(255, 255, 255, 0.05);
     backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.1);
-    z-index: 100;
+    z-index: 50;
+    display: block;
 }
 
 /* Game layout adjustments */
@@ -55,9 +58,33 @@
     align-items: flex-start;
     gap: 2rem;
     position: relative;
-    max-width: 1200px;
+    max-width: 1000px;
     margin: 0 auto;
     padding: 0 1rem;
+}
+
+/* AdSense specific styling */
+.adsbygoogle {
+    display: block !important;
+    width: 100% !important;
+    text-align: center;
+    background: transparent !important;
+}
+
+.sidebar-ad .adsbygoogle {
+    width: 100% !important;
+    height: auto !important;
+}
+
+/* Loading state for ads */
+.ad-container.loading {
+    background: rgba(255, 255, 255, 0.02);
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 0.6; }
 }
 
 /* Ad blocker message */
@@ -72,17 +99,6 @@
     border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-/* Loading state for ads */
-.ad-container.loading {
-    background: rgba(255, 255, 255, 0.02);
-    animation: pulse 2s infinite;
-}
-
-@keyframes pulse {
-    0%, 100% { opacity: 0.3; }
-    50% { opacity: 0.6; }
-}
-
 /* Responsive adjustments */
 @media (max-width: 1400px) {
     .sidebar-ad {
@@ -93,12 +109,13 @@
 
 @media (max-width: 1200px) {
     .sidebar-ad {
-        display: none;
+        display: none !important;
     }
     
     .game-layout {
         justify-content: center;
         padding: 0 2rem;
+        max-width: 800px;
     }
 }
 
@@ -120,6 +137,7 @@
     
     .game-layout {
         padding: 0 1rem;
+        max-width: 100%;
     }
 }
 
@@ -138,12 +156,6 @@
         max-width: 250px;
         min-height: 200px;
     }
-}
-
-/* AdSense specific styling */
-.adsbygoogle {
-    background: transparent !important;
-    display: block !important;
 }
 
 /* High contrast mode support */
